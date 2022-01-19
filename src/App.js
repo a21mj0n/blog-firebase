@@ -1,10 +1,11 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import './styles/App.scss';
-import React from 'react';
 import AppBar from './components/bars/AppBar';
 import { jsx, useTheme } from '@emotion/react';
 import { Container } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage';
 
 function App({ isDark, setIsDark }) {
   const theme = useTheme();
@@ -21,7 +22,12 @@ function App({ isDark, setIsDark }) {
     <div css={styles.content}>
       <AppBar isDark={isDark} setIsDark={setIsDark} />
       <Container>
-        {isDark ? 'dark-theme' : 'light-them'}
+        <Router>
+          <Routes>
+            <Route path="/" element={<HomePage/>} exact></Route>
+            <Route path="/about" element={<HomePage/>}></Route>
+          </Routes>
+        </Router>
       </Container>
     </div>
   );

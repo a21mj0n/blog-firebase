@@ -7,10 +7,10 @@ import { ThemeProvider } from '@emotion/react';
 import { darkTheme, lightTheme } from './styles/theme'
 
 function Root() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(localStorage.getItem('theme') === 'dark' || false);
 
   return (
-    <ThemeProvider theme={localStorage.getItem('theme') === 'dark' ? darkTheme : lightTheme}>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <App isDark={isDark} setIsDark={setIsDark} />
     </ThemeProvider>
   )
