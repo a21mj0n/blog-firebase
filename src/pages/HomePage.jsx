@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import React from 'react';
-import { Row, Col, Card, Button } from 'react-bootstrap'
+import { Row, Col, Card, Button } from 'react-bootstrap';
 import { jsx, useTheme } from '@emotion/react';
 
 const HomePage = () => {
@@ -10,7 +10,7 @@ const HomePage = () => {
   const styles = {
     section: {
       color: theme.primary,
-      marginTop: '4rem'
+      marginTop: '4rem',
     },
     card: {
       backgroundColor: theme.secondary,
@@ -21,12 +21,12 @@ const HomePage = () => {
       img: {
         borderTopRightRadius: '8px',
         borderTopLeftRadius: '8px',
-      }
+      },
     },
     title: {
       color: theme.secondary,
-    }
-  }
+    },
+  };
 
   return (
     <>
