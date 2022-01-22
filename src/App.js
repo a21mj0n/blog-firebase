@@ -15,9 +15,10 @@ function App({ isDark, setIsDark }) {
 
   const styles = {
     content: {
-      backgroundColor: theme.primary,
-      height: '100vh',
-      color: theme.secondary,
+      backgroundColor: theme.background,
+      minHeight: '100vh',
+      height: '100%',
+      color: theme.onBackground,
     },
   };
 

@@ -1,22 +1,25 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import React from 'react';
-import { Row, Col, Card, Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Card, /* Button */ } from 'react-bootstrap';
 import { jsx, useTheme } from '@emotion/react';
+import { chunk } from 'lodash'
 
 const HomePage = () => {
   const theme = useTheme();
+  const [posts, setPosts] = useState([]);
 
   const styles = {
     section: {
-      color: theme.primary,
-      marginTop: '4rem',
+      paddingTop: '4rem',
+      paddingBottom: '4rem',
     },
     card: {
-      backgroundColor: theme.secondary,
-      boxShadow: '0px 2px 10px 4px rgba(0, 0, 0, .1)',
+      backgroundColor: theme.surface,
       border: 'none',
       borderRadius: '8px',
+      color: theme.onSurface,
+      marginTop: '12px',
 
       img: {
         borderTopRightRadius: '8px',
@@ -24,53 +27,62 @@ const HomePage = () => {
       },
     },
     title: {
-      color: theme.secondary,
+      color: theme.onBackground,
     },
   };
+
+  useEffect(async () => {
+    const response = await fetch('https://saurav.tech/NewsAPI/top-headlines/category/health/in.json');
+    const data = await response.json();
+    setPosts(data.articles)
+  }, [])
 
   return (
     <>
       <section css={styles.section}>
-        <h2 css={styles.title}>Latest Posts</h2>
+        {/* <h2 css={styles.title}>Latest News</h2> */}
         <Row>
-          <Col md={4}>
-            <Card css={styles.card}>
-              <Card.Img variant="top" src="https://picsum.photos/seed/picsum/600/400.webp" />
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the bulk of
-                  the card's content.
-                </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
-              </Card.Body>
-            </Card>
+          <Col xl={4} lg={4} md={6} sm={6}>
+            {posts.slice(0, 10).map((post, index) => (
+              <Card key={index} css={styles.card}>
+                <Card.Img variant="top" src={post.urlToImage} />
+                <Card.Body>
+                  <Card.Title>{post.title}</Card.Title>
+                  <Card.Text>
+                    {post.description}
+                  </Card.Text>
+                  {/* <Button variant="primary" className='w-100'>More</Button> */}
+                </Card.Body>
+              </Card>
+            ))}
           </Col>
-          <Col md={4}>
-            <Card css={styles.card}>
-              <Card.Img variant="top" src="https://picsum.photos/seed/picsum/600/400.webp" />
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the bulk of
-                  the card's content.
-                </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
-              </Card.Body>
-            </Card>
+          <Col xl={4} lg={4} md={6} sm={6}>
+            {posts.slice(10, 20).map((post, index) => (
+              <Card key={index} css={styles.card}>
+                <Card.Img variant="top" src={post.urlToImage} />
+                <Card.Body>
+                  <Card.Title>{post.title}</Card.Title>
+                  <Card.Text>
+                    {post.description}
+                  </Card.Text>
+                  {/* <Button variant="primary" className='w-100'>More</Button> */}
+                </Card.Body>
+              </Card>
+            ))}
           </Col>
-          <Col md={4}>
-            <Card css={styles.card}>
-              <Card.Img variant="top" src="https://picsum.photos/seed/picsum/600/400.webp" />
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the bulk of
-                  the card's content.
-                </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
-              </Card.Body>
-            </Card>
+          <Col xl={4} lg={4} md={6} sm={6}>
+            {posts.slice(20, 30).map((post, index) => (
+              <Card key={index} css={styles.card}>
+                <Card.Img variant="top" src={post.urlToImage} />
+                <Card.Body>
+                  <Card.Title>{post.title}</Card.Title>
+                  <Card.Text>
+                    {post.description}
+                  </Card.Text>
+                  {/* <Button variant="primary" className='w-100'>More</Button> */}
+                </Card.Body>
+              </Card>
+            ))}
           </Col>
         </Row>
       </section>

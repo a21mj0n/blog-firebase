@@ -4,7 +4,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ThemeProvider } from '@emotion/react';
-import { darkTheme, lightTheme } from './styles/theme'
+import { darkTheme, lightTheme } from './styles/theme';
+import 'boxicons';
+import './styles/override-bootstrap.scss';
 
 function Root() {
   const [isDark, setIsDark] = useState(localStorage.getItem('theme') === 'dark' || false);

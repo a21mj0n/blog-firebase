@@ -1,15 +1,17 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, useTheme } from '@emotion/react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
 
 const AppBar = ({ isAuth, isDark, setIsDark }) => {
   const theme = useTheme();
 
   const navStyle = {
-    backgroundColor: theme.secondary,
-    color: theme.primary,
+    backgroundColor: theme.surface,
+    color: theme.onSruface,
     padding: '.5rem 0',
     '&:hover': {
       cursor: 'pointer',
@@ -21,6 +23,12 @@ const AppBar = ({ isAuth, isDark, setIsDark }) => {
     setIsDark(!isDark);
   };
 
+  const logout = () => {
+    signOut(auth);
+    localStorage.removeItem('isAuth');
+    window.location.pathname = '/auth';
+  };
+
   return (
     <nav css={navStyle}>
       <Container>
@@ -29,14 +37,26 @@ const AppBar = ({ isAuth, isDark, setIsDark }) => {
             <Link
               className="text-decoration-none"
               css={{ fontWeight: 'bold', fontSize: 24, color: theme.primary }}
-              to="/auth"
+              to="/"
             >
-              Blog
+              NEWS
             </Link>
           </Col>
           <Col className="d-flex justify-content-end">
-            <button className="btn btn-light me-2" onClick={() => changeTheme(isDark)}>Switch</button>
-            {!isAuth && <Link className="btn btn-light" to="/auth">Sign In</Link>}
+            <button className="btn btn-light d-flex align-items-center me-2" onClick={() => changeTheme(isDark)}>
+              {!isDark ? <box-icon class="me-1" name="moon" /> : <box-icon class="me-1" name="sun" />}
+              <span>{!isDark ? 'Dark Mode' : 'Light Mode'}</span>
+            </button>
+            {!isAuth
+              ? <Link className="btn btn-light d-flex align-items-center" to="/auth">
+                <span className='me-1'>Sign In</span>
+                <box-icon name="log-in" />
+              </Link>
+              : <Button className="btn btn-light d-flex align-items-center" onClick={logout}>
+                <span className='me-1'>Logout</span>
+                <box-icon name="log-out" />
+              </Button>
+            }
           </Col>
         </Row>
       </Container>
