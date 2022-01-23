@@ -16,7 +16,7 @@ const AuthPage = ({ setIsAuth }) => {
     console.log(result);
     localStorage.setItem('isAuth', true);
     setIsAuth(true);
-    navigate('/');
+    navigate('/profile');
   };
 
   return (

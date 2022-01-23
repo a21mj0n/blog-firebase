@@ -8,6 +8,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AuthPage from './pages/auth/AuthPage';
 import { useState } from 'react';
+import PostCreatePage from './pages/admin/blog/Create';
+import ProfilePage from './pages/ProfilePage';
 
 function App({ isDark, setIsDark }) {
   const theme = useTheme();
@@ -30,6 +32,8 @@ function App({ isDark, setIsDark }) {
           <Routes>
             <Route path="/" element={<HomePage />} exact />
             <Route path="/auth" element={<AuthPage setIsAuth={setIsAuth} />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/posts/create" element={<PostCreatePage />} />
           </Routes>
         </Container>
       </Router>
