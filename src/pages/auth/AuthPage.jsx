@@ -15,6 +15,13 @@ const AuthPage = ({ setIsAuth }) => {
     const result = await signInWithPopup(auth, provider);
     console.log(result);
     localStorage.setItem('isAuth', true);
+    const user = {
+      id: result.user.uid,
+      name: result.user.displayName,
+      photo: result.user.photoURL,
+    };
+
+    localStorage.setItem('user', JSON.stringify(user));
     setIsAuth(true);
     navigate('/profile');
   };
