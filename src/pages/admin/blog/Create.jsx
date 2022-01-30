@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/forms/Button';
 import { addDoc, collection } from 'firebase/firestore';
 import { db, auth } from '../../../firebase';
+import useStorage from '../../../hooks/useStorage';
 
 
 const Create = () => {
   const [validated, setValidated] = useState(false);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
+  const [file, setFile] = useState(null);
 
   const navigate = useNavigate();
 
@@ -20,13 +22,17 @@ const Create = () => {
 
     if (validated) {
       const postCollectionRef = collection(db, 'posts')
+
+      const { url } = useStorage(file);
+
       await addDoc(postCollectionRef, {
         title,
         text,
         author: {
           id: auth.currentUser.uid,
           name: auth.currentUser.displayName,
-        }
+        },
+        imageUrl: url,
       });
 
       navigate('/profile')
@@ -52,6 +58,8 @@ const Create = () => {
           <Form.Control
             type="file"
             placeholder="Post Image"
+            onChange={(e) => setFile(e.target.files[0])}
+            required
           />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
