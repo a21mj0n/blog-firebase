@@ -4,12 +4,10 @@ import React from 'react';
 import { jsx, useTheme } from '@emotion/react';
 import { auth, provider } from '../../firebase';
 import { signInWithPopup } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
 import Button from '../../components/forms/Button'
 
 const AuthPage = ({ setIsAuth }) => {
   const theme = useTheme();
-  const navigate = useNavigate();
 
   const signInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
@@ -17,13 +15,13 @@ const AuthPage = ({ setIsAuth }) => {
     localStorage.setItem('isAuth', true);
     const user = {
       id: result.user.uid,
-      name: result.user.displayName,
-      photo: result.user.photoURL,
+      displayName: result.user.displayName,
+      photoURL: result.user.photoURL,
     };
 
     localStorage.setItem('user', JSON.stringify(user));
     setIsAuth(true);
-    navigate('/profile');
+    window.location.pathname = '/profile'
   };
 
   return (

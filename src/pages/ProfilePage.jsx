@@ -29,7 +29,7 @@ const ProfilePage = () => {
         </Col>
       </Row>
       <Card className='mt-3 p-2' css={{ backgroundColor: theme.surface, color: theme.onSurface }}>
-        Hello, {user ? user.name : 'User'}
+        Hello, {user ? user.displayName : 'User'}
       </Card>
     </>
   );

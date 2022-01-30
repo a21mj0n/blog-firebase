@@ -9,14 +9,7 @@ import { useState, useEffect } from 'react'
 
 const AppBar = ({ isAuth, isDark, setIsDark }) => {
   const theme = useTheme();
-  const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    const getUser = () => {
-      setUser(JSON.parse(localStorage.getItem('user')));
-    }
-    getUser();
-  }, [])
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   const navStyle = {
     backgroundColor: theme.surface,
@@ -32,6 +25,7 @@ const AppBar = ({ isAuth, isDark, setIsDark }) => {
   const logout = () => {
     signOut(auth);
     localStorage.removeItem('isAuth');
+    localStorage.removeItem('user');
     window.location.pathname = '/auth';
   };
 
@@ -45,7 +39,7 @@ const AppBar = ({ isAuth, isDark, setIsDark }) => {
               css={{ fontWeight: 'bold', fontSize: 24, color: theme.primary }}
               to="/"
             >
-              NEWS
+              BLOG
             </Link>
           </Col>
           <Col className="d-flex justify-content-end">
@@ -60,7 +54,7 @@ const AppBar = ({ isAuth, isDark, setIsDark }) => {
               </Link>
               : <Dropdown>
                 <Dropdown.Toggle variant="light" id="dropdown-basic">
-                  <img css={{ borderRadius: '50%' }} width={22} src={user.photo} alt={user.name} /> {user.name}
+                  {user && <img css={{ borderRadius: '50%' }} width={22} src={user.photoURL} alt={user.displayName} />} {user && user.displayName}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item className="btn btn-light d-flex align-items-center justify-content-center" href="/profile">
