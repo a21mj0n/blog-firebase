@@ -2,21 +2,39 @@ import React, { useState } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/forms/Button';
+import CustomProgressBar from '../../../components/bars/CustomProgressBar';
 import { addDoc, collection } from 'firebase/firestore';
-import { db, auth } from '../../../firebase';
+import { db, auth, storage } from '../../../firebase';
+import { ref, getDownloadURL } from 'firebase/storage';
 
 
 const Create = () => {
   const [validated, setValidated] = useState(false);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
+  const [file, setFile] = useState(null);
 
   const navigate = useNavigate();
 
+  const types = ['image/png', 'image/jpg', 'image/jpeg']
+
+  const changeFile = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile && types.includes(selectedFile.type)) {
+      setFile(selectedFile)
+      setValidated(false)
+    } else {
+      setFile(null)
+      setValidated(true)
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
     setValidated(true);
+    const storageRef = ref(storage, `images/${file.name}`);
+    const url = await getDownloadURL(storageRef);
 
     if (validated) {
       const postCollectionRef = collection(db, 'posts');
@@ -27,6 +45,7 @@ const Create = () => {
           id: auth.currentUser.uid,
           name: auth.currentUser.displayName,
         },
+        image: url
       });
 
       navigate('/profile');
@@ -52,7 +71,12 @@ const Create = () => {
           <Form.Control
             type="file"
             placeholder="Post Image"
+            onChange={changeFile}
+            required
           />
+
+          {file && <CustomProgressBar className="mt-3" file={file} />}
+
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
 
