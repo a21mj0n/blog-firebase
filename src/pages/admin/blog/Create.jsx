@@ -19,22 +19,22 @@ const Create = () => {
     setValidated(true);
 
     if (validated) {
-      const postCollectionRef = collection(db, 'posts')
+      const postCollectionRef = collection(db, 'posts');
       await addDoc(postCollectionRef, {
         title,
         text,
         author: {
           id: auth.currentUser.uid,
           name: auth.currentUser.displayName,
-        }
+        },
       });
 
-      navigate('/profile')
+      navigate('/profile');
     }
   };
 
   return (
-    <Form className='mt-3' noValidate validated={validated} onSubmit={handleSubmit}>
+    <Form className="mt-3" noValidate validated={validated} onSubmit={handleSubmit}>
       <Row className="mb-3">
         <Form.Group as={Col} md="6" controlId="validationCustom01">
           <Form.Label>Post Title</Form.Label>
@@ -74,6 +74,6 @@ const Create = () => {
       <Button iconName="save" icontype="regular" type="submit">Submit form</Button>
     </Form>
   );
-}
+};
 
 export default Create;

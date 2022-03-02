@@ -13,9 +13,6 @@ const AppBar = ({ isAuth, isDark, setIsDark }) => {
     backgroundColor: theme.surface,
     color: theme.onSruface,
     padding: '.5rem 0',
-    '&:hover': {
-      cursor: 'pointer',
-    },
   };
 
   const changeTheme = (isDark) => {
@@ -23,8 +20,8 @@ const AppBar = ({ isAuth, isDark, setIsDark }) => {
     setIsDark(!isDark);
   };
 
-  const logout = () => {
-    signOut(auth);
+  const logout = async () => {
+    await signOut(auth);
     localStorage.removeItem('isAuth');
     window.location.pathname = '/auth';
   };
