@@ -23,8 +23,8 @@ export const darkTheme = {
   secondary: '#03DAC6',
   secondaryVariant: '#03DAC6',
   
-  background: '#000000',
-  surface: '#121212',
+  background: '#393E46',
+  surface: '#222831',
   error: '#CF6679',
 
   onPrimary: '#000000',

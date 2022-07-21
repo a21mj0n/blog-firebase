@@ -45,7 +45,7 @@ const AppBar = ({ isAuth, isDark, setIsDark }) => {
           <Col className="d-flex justify-content-end">
             <button className="btn btn-light d-flex align-items-center me-2" onClick={() => changeTheme(isDark)}>
               {!isDark ? <box-icon class="me-1" name="moon" /> : <box-icon class="me-1" name="sun" />}
-              <span>{!isDark ? 'Dark Mode' : 'Light Mode'}</span>
+              {/* <span>{!isDark ? 'Dark Mode' : 'Light Mode'}</span> */}
             </button>
             {!isAuth
               ? <Link className="btn btn-light d-flex align-items-center" to="/auth">

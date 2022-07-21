@@ -7,49 +7,58 @@ import { addDoc, collection } from 'firebase/firestore';
 import { db, auth, storage } from '../../../firebase';
 import { ref, getDownloadURL } from 'firebase/storage';
 
-
 const Create = () => {
   const [validated, setValidated] = useState(false);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [file, setFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const types = ['image/png', 'image/jpg', 'image/jpeg']
+  const types = ['image/png', 'image/jpg', 'image/jpeg'];
 
   const changeFile = (e) => {
     const selectedFile = e.target.files[0];
 
     if (selectedFile && types.includes(selectedFile.type)) {
-      setFile(selectedFile)
-      setValidated(false)
+      setFile(selectedFile);
+      setValidated(false);
     } else {
-      setFile(null)
-      setValidated(true)
+      setFile(null);
+      setValidated(true);
     }
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setValidated(true);
-    const storageRef = ref(storage, `images/${file.name}`);
-    const url = await getDownloadURL(storageRef);
 
-    if (validated) {
-      const postCollectionRef = collection(db, 'posts');
-      await addDoc(postCollectionRef, {
-        title,
-        text,
-        author: {
-          id: auth.currentUser.uid,
-          name: auth.currentUser.displayName,
-        },
-        image: url
-      });
-
-      navigate('/profile');
+    if (title === '' || text === '' || file === null) {
+      setValidated(true);
+      return;
     }
+
+    const storageRef = ref(storage, `images/${file?.name}`);
+    const url = await getDownloadURL(storageRef);
+    const postCollectionRef = collection(db, 'posts');
+    const date = new Date();
+
+    setIsLoading(true);
+
+    await addDoc(postCollectionRef, {
+      title,
+      text,
+      author: {
+        id: auth.currentUser.uid,
+        name: auth.currentUser.displayName,
+      },
+      image: url,
+      createdAt: date.toLocaleDateString(),
+    });
+
+    setIsLoading(false);
+
+    navigate('/profile');
   };
 
   return (
@@ -95,7 +104,10 @@ const Create = () => {
           </Form.Control.Feedback>
         </Form.Group>
       </Row>
-      <Button iconName="save" icontype="regular" type="submit">Submit form</Button>
+      { isLoading 
+          ? 'Creating Post ...' 
+          : <Button iconName="save" icontype="regular" type="submit">Submit form</Button>
+      }
     </Form>
   );
 };
